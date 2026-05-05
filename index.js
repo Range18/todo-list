@@ -64,7 +64,7 @@ class TodoList extends Component {
             ]),
             createElement("ul", {id: "todos"},
                 this.state.map((element) => {
-                    createElement("li", {}, [
+                    return createElement("li", {}, [
                         createElement("input", {type: "checkbox"}),
                         createElement("label", {}, element.label),
                         createElement("button", {}, "🗑️")
