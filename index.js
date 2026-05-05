@@ -40,6 +40,14 @@ class Component {
         this._domNode = this.render();
         return this._domNode;
     }
+
+    update() {
+      const newDomNode = this.render();
+      if (this._domNode && this._domNode.parentNode) {
+        this._domNode.parentNode.replaceChild(newDomNode, this._domNode);
+      }
+      this._domNode = newDomNode;
+    }
 }
 
 class TodoList extends Component {
