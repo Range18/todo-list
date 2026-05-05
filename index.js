@@ -22,11 +22,11 @@
     }
 
     if (Array.isArray(callbacks)) {
-      callbacks.forEach((callback) => {
-        element.addEventListener(callback.eventType, callback.listener)
-      });
+        callbacks.forEach((callback) => {
+            element.addEventListener(callback.eventType, callback.listener)
+        });
     } else if (callbacks) {
-      element.addEventListener(callbacks.eventType, callbacks.listener)
+        element.addEventListener(callbacks.eventType, callbacks.listener)
     }
 
     return element;
@@ -42,11 +42,11 @@ class Component {
     }
 
     update() {
-      const newDomNode = this.render();
-      if (this._domNode && this._domNode.parentNode) {
-        this._domNode.parentNode.replaceChild(newDomNode, this._domNode);
-      }
-      this._domNode = newDomNode;
+        const newDomNode = this.render();
+        if (this._domNode && this._domNode.parentNode) {
+            this._domNode.parentNode.replaceChild(newDomNode, this._domNode);
+        }
+        this._domNode = newDomNode;
     }
 }
 
@@ -55,28 +55,26 @@ class TodoList extends Component {
     constructor() {
         super();
 
-        this.state = [
-            {
-                label: 'Сделать домашку',
-            },
-            {
-                label: 'Сделать практику',
-            },
-            {
-                label: 'Пойти домой',
-            }];
+        this.state = {
+            labelText: "",
+            todos: [
+                {label: "Сделать домашку"},
+                {label: "Сделать практику"},
+                {label: "Пойти домой"},
+            ],
+        };
     }
 
     onAddTask = () => {
-      if (this.state.labelText.trim()) {
-        this.state.todos.push({ label: this.state.labelText });
-        this.state.labelText = "";
-        this.update();
-      }
+        if (this.state.labelText.trim()) {
+            this.state.todos.push({label: this.state.labelText});
+            this.state.labelText = "";
+            this.update();
+        }
     };
 
     onAddInputChange = (e) => {
-      this.state.labelText = e.target.value;
+        this.state.labelText = e.target.value;
     };
 
     render() {
@@ -87,11 +85,17 @@ class TodoList extends Component {
                     id: "new-todo",
                     type: "text",
                     placeholder: "Задание",
-                }, [], this.onAddInputChange),
-                createElement("button", {id: "add-btn"}, "+", this.onAddTask),
+                }, [], {
+                    eventType: "input",
+                    listener: this.onAddInputChange
+                }),
+                createElement("button", {id: "add-btn"}, "+", {
+                    eventType: "click",
+                    listener: this.onAddTask
+                }),
             ]),
             createElement("ul", {id: "todos"},
-                this.state.map((element) => {
+                this.state.todos.map((element) => {
                     return createElement("li", {}, [
                         createElement("input", {type: "checkbox"}),
                         createElement("label", {}, element.label),
