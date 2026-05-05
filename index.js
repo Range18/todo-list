@@ -50,18 +50,33 @@ class Component {
     }
 }
 
+class Task extends Component {
+    constructor({todo, index, onDelete, onComplete}) {
+        super();
+        this.state = {
+            todo, index, onDelete, onComplete,
+        }
+    }
+
+    render() {
+        return createElement("li", {}, [
+            createElement("input", {type: "checkbox"}, [], {
+            evenType: "click", listener: this.state.onComplete
+        }), createElement("label", {}, this.state.todo.label),
+            createElement("button", {}, "🗑️", {
+            eventType: "click", listener: this.state.onDelete
+        }),])
+    }
+
+}
+
 class TodoList extends Component {
 
     constructor() {
         super();
 
         this.state = {
-            labelText: "",
-            todos: [
-                {label: "Сделать домашку"},
-                {label: "Сделать практику"},
-                {label: "Пойти домой"},
-            ],
+            labelText: "", todos: [{label: "Сделать домашку"}, {label: "Сделать практику"}, {label: "Пойти домой"},],
         };
     }
 
@@ -78,32 +93,15 @@ class TodoList extends Component {
     };
 
     render() {
-        return createElement("div", {class: "todo-list"}, [
-            createElement("h1", {}, "TODO List"),
-            createElement("div", {class: "add-todo"}, [
-                createElement("input", {
-                    id: "new-todo",
-                    type: "text",
-                    placeholder: "Задание",
-                }, [], {
-                    eventType: "input",
-                    listener: this.onAddInputChange
-                }),
-                createElement("button", {id: "add-btn"}, "+", {
-                    eventType: "click",
-                    listener: this.onAddTask
-                }),
-            ]),
-            createElement("ul", {id: "todos"},
-                this.state.todos.map((element) => {
-                    return createElement("li", {}, [
-                        createElement("input", {type: "checkbox"}),
-                        createElement("label", {}, element.label),
-                        createElement("button", {}, "🗑️")
-                    ])
-                })
-            ),
-        ]);
+        return createElement("div", {class: "todo-list"}, [createElement("h1", {}, "TODO List"), createElement("div", {class: "add-todo"}, [createElement("input", {
+            id: "new-todo", type: "text", placeholder: "Задание",
+        }, [], {
+            eventType: "input", listener: this.onAddInputChange
+        }), createElement("button", {id: "add-btn"}, "+", {
+            eventType: "click", listener: this.onAddTask
+        }),]), createElement("ul", {id: "todos"}, this.state.todos.map((todo, index,) => {
+            return new Task({todo, index}).getDomNode();
+        })),]);
     }
 
 }
