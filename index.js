@@ -101,8 +101,18 @@ class Task extends Component {
             index,
             onDelete,
             onComplete,
+            isDeleteClicked: false,
         };
     }
+
+    onDeleteClick = () => {
+        if (this.state.isDeleteClicked) {
+            this.state.onDelete(this.state.index);
+        } else {
+            this.state.isDeleteClicked = true;
+            this.update();
+        }
+    };
 
     render() {
         return createElement("li", {}, [
@@ -115,14 +125,14 @@ class Task extends Component {
             }),
 
             createElement("label", {
-                style: this.state.todo.completed
-                    ? "color: gray;"
-                    : "",
+                style: this.state.todo.completed ? "color: gray;" : "",
             }, this.state.todo.label),
 
-            createElement("button", {}, "🗑️", {
+            createElement("button", {
+                style: this.state.isDeleteClicked ? "color: white; background: red;" : "",
+            }, "🗑️", {
                 eventType: "click",
-                listener: () => this.state.onDelete(this.state.index),
+                listener: this.onDeleteClick,
             }),
         ]);
     }
