@@ -26,11 +26,16 @@
 
 class Component {
     constructor() {
+        this._domNode = undefined;
     }
 
     getDomNode() {
-        this._domNode = this.render();
+        this.update();
         return this._domNode;
+    }
+
+    update() {
+        this._domNode = this.render();
     }
 }
 
